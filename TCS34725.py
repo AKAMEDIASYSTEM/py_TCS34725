@@ -9,7 +9,7 @@ import time
 
 class TCS34725():
 
-    TCS34725_ADDRESS          = 0x29)
+    TCS34725_ADDRESS          = 0x29
 
     TCS34725_COMMAND_BIT      = 0x80
 
