@@ -75,8 +75,8 @@ class TCS34725():
         self.i2c = Adafruit_I2C(self.TCS34725_ADDRESS)
 
     def begin(self):
-        x = self.i2c.readU8(self.TCS34725_ID)
-        if x != 0x12: # code I was basing this on expects 0x44, not sure why
+        x = self.i2c.readS8(self.TCS34725_ID)
+        if x != 0x44: # code I was basing this on expects 0x44, not sure why. Got 0x12
             print 'did not get the expected response from sensor: ', x
             return False
         self._tcs34725Initialised = True
@@ -114,7 +114,7 @@ class TCS34725():
         self._tcs34725Gain = gain
 
     def getStatus(self):
-        print self.i2c.readU8(self.TCS34725_STATUS)
+        return self.i2c.readU8(self.TCS34725_STATUS)
 
     def getRawData(self):
         c = self.i2c.readU16(self.TCS34725_CDATAL)

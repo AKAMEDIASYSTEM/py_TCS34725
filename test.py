@@ -50,7 +50,7 @@ print 'set integration time 0x14 (should break)'
 tcs.setIntegrationTime(0x14)
 
 print 'getting status'
-tcs.getStatus()
+print tcs.getStatus()
 
 while True:
 	print tcs.getRawData()
