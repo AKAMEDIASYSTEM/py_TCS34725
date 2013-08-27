@@ -28,6 +28,24 @@ print tcs.getRawData()
 print 'set integration time 0xFF'
 tcs.setIntegrationTime(0xFF)
 
+print 'set integration time 0xF6'
+tcs.setIntegrationTime(0xF6)
+
+print 'set integration time 0xEB'
+tcs.setIntegrationTime(0xEB)
+
+print 'set integration time 0xD5'
+tcs.setIntegrationTime(0xD5)
+
+print 'set integration time 0xC0'
+tcs.setIntegrationTime(0xC0)
+
+print 'set integration time 0x00'
+tcs.setIntegrationTime(0x00)
+
+print 'set integration time 0x14 (should break)'
+tcs.setIntegrationTime(0x14)
+
 while True:
 	print tcs.getRawData()
 	time.sleep(1)
