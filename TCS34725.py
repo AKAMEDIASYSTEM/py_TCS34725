@@ -92,7 +92,7 @@ class TCS34725():
 
     def disable(self):
         reg = 0
-        reg = self.i2c.readU8(self.TCS34725_ENABLE)
+        reg = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE)
         self.i2c.write8(self.TCS34725_ENABLE, reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN))
 
     def setIntegrationTime(self, theTime):
@@ -114,13 +114,13 @@ class TCS34725():
         self._tcs34725Gain = gain
 
     def getStatus(self):
-        return self.i2c.readU8(self.TCS34725_STATUS)
+        return self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_STATUS)
 
     def getRawData(self):
-        c = self.i2c.readU16(self.TCS34725_CDATAL)
-        r = self.i2c.readU16(self.TCS34725_RDATAL)
-        g = self.i2c.readU16(self.TCS34725_GDATAL)
-        b = self.i2c.readU16(self.TCS34725_BDATAL)
+        c = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_CDATAL)
+        r = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
+        g = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
+        b = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
         elif self._tcs34725IntegrationTime == 0xF6:
@@ -162,7 +162,7 @@ class TCS34725():
         return ((-0.32466 * r) + (1.57837 * g) + (-0.73191 * b))
 
     def setInterrupt(self, bool):
-        r = self.i2c.readU8(self.TCS34725_ENABLE)
+        r = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE)
         if bool:
             r |= self.TCS34725_ENABLE_AIEN
         else:
