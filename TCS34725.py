@@ -73,10 +73,9 @@ class TCS34725():
 
     def __init__(self, *args, **kwargs):
         self.i2c = Adafruit_I2C(self.TCS34725_ADDRESS)
-        print 'started tcs34725 i2c client'
 
     def begin(self):
-        x = self.i2c.readU8(self.TCS34725_ID)
+        x = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ID)
         if x != 0x44: # code I was basing this on expects 0x44, not sure why. Got 0x12
             print 'did not get the expected response from sensor: ', x
             return False
