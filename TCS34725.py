@@ -114,7 +114,7 @@ class TCS34725():
         self._tcs34725Gain = gain
 
     def getStatus(self):
-        return self.i2c.readU8(self.TCS34725_STATUS)
+        print self.i2c.readU8(self.TCS34725_STATUS)
 
     def getRawData(self):
         c = self.i2c.readU16(self.TCS34725_CDATAL)
