@@ -86,14 +86,14 @@ class TCS34725():
         return True
 
     def enable(self):
-        self.i2c.write8(self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON)
         time.sleep(0.003)
-        self.i2c.write8(self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN)
 
     def disable(self):
         reg = 0
         reg = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE)
-        self.i2c.write8(self.TCS34725_ENABLE, reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN))
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN))
 
     def setIntegrationTime(self, theTime):
         if theTime not in [0xFF,0xF6,0xEB,0xD5,0xC0,0x00]:
@@ -111,7 +111,7 @@ class TCS34725():
         if gain not in [0,1,2,3]:
             print 'setting gain to 0, %s is illegal' % gain
             gain = 0
-        self.i2c.write8(self.TCS34725_CONTROL, gain)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_CONTROL, gain)
         self._tcs34725Gain = gain
 
     def getStatus(self):
@@ -188,10 +188,10 @@ class TCS34725():
             r |= self.TCS34725_ENABLE_AIEN
         else:
             r &= ~self.TCS34725_ENABLE_AIEN
-        self.i2c.write8(self.TCS34725_ENABLE, r)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, r)
 
     def clearInterrupt(self):
-        self.i2c.write8(self.TCS34725_ADDRESS, 0x66)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ADDRESS, 0x66)
 
     def setInterruptLimits(self, lo, hi):
         pass
