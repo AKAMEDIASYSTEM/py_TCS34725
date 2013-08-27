@@ -189,11 +189,11 @@ class TCS34725():
         g = int(self.mapVals(g,0,65535,0,255))
         b = int(self.mapVals(b,0,65535,0,255))
 
-    def mapVals(val, inMin, inMax, outMin, outMax):
+    def mapVals(self, val, inMin, inMax, outMin, outMax):
         toRet = outMin + (outMax - outMin) * ((val - inMin) / (inMax - inMin))
         return self.clamp(toRet, outMin, outMax)
 
-    def clamp(val, min, max):
+    def clamp(self, val, min, max):
         if (val < min):
             val = min
         if (val > max):
