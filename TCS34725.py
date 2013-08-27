@@ -77,13 +77,23 @@ class TCS34725():
     def begin(self):
         x = self.i2c.readU8(self.TCS34725_ID)
         if x != 0x12: # code I was basing this on expects 0x44, not sure why
-            print 'did not get the expected response from sensor', x
+            print 'did not get the expected response from sensor: ', x
             return False
         self._tcs34725Initialised = True
         self.setIntegrationTime(self._tcs34725IntegrationTime)
         self.setGain(0)
         self.enable()
         return True
+
+    def enable(self):
+        self.i2c.write8(self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON)
+        time.sleep(0.003)
+        self.i2c.write8(self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN)
+
+    def disable(self):
+        reg = 0
+        reg = self.i2c.readU8(self.TCS34725_ENABLE)
+        self.i2c.write8(self.TCS34725_ENABLE, reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN))
 
     def setIntegrationTime(self, theTime):
         if theTime not in [0xFF,0xF6,0xEB,0xD5,0xC0,0x00]:
@@ -103,11 +113,14 @@ class TCS34725():
         self.i2c.write8(self.TCS34725_CONTROL, gain)
         self._tcs34725Gain = gain
 
+    def getStatus(self):
+        return self.ic2.readU8(self.TCS34725_STATUS)
+
     def getRawData(self):
-        c = self.i2c.readS16(self.TCS34725_CDATAL)
-        r = self.i2c.readS16(self.TCS34725_RDATAL)
-        g = self.i2c.readS16(self.TCS34725_GDATAL)
-        b = self.i2c.readS16(self.TCS34725_BDATAL)
+        c = self.i2c.readU16(self.TCS34725_CDATAL)
+        r = self.i2c.readU16(self.TCS34725_RDATAL)
+        g = self.i2c.readU16(self.TCS34725_GDATAL)
+        b = self.i2c.readU16(self.TCS34725_BDATAL)
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
         elif self._tcs34725IntegrationTime == 0xF6:
@@ -158,16 +171,6 @@ class TCS34725():
 
     def clearInterrupt(self):
         self.i2c.write8(self.TCS34725_ADDRESS, 0x66)
-
-    def enable(self):
-        self.i2c.write8(self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON)
-        time.sleep(0.003)
-        self.i2c.write8(self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN)
-
-    def disable(self):
-        reg = 0
-        reg = self.i2c.readU8(self.TCS34725_ENABLE)
-        self.i2c.write8(self.TCS34725_ENABLE, reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN))
 
     def setInterruptLimits(self, lo, hi):
         pass
