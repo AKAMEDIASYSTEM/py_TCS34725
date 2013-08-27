@@ -86,20 +86,20 @@ class TCS34725():
         return True
 
     def enable(self):
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON & 0xFF)
         time.sleep(0.003)
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN))
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (self.TCS34725_ENABLE_PON | sel f.TCS34725_ENABLE_AEN) & 0xFF)
 
     def disable(self):
         reg = 0
         reg = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE)
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN)))
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN)) & 0xFF)
 
     def setIntegrationTime(self, theTime):
         if theTime not in [0xFF,0xF6,0xEB,0xD5,0xC0,0x00]:
             print 'setting integration time to 0x00, %s is illegal' % theTime
             theTime = 0x00
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ATIME, theTime)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ATIME, theTime & 0xFF)
         # self.i2c.write8(self.TCS34725_ATIME, theTime)
         self._tcs34725IntegrationTime = theTime
 
@@ -182,9 +182,9 @@ class TCS34725():
     def calculateLux(self, r, g, b):
         return ((-0.32466 * r) + (1.57837 * g) + (-0.73191 * b))
 
-    def setInterrupt(self, bool):
+    def setInterrupt(self, theBool):
         r = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE)
-        if bool:
+        if theBool:
             r |= self.TCS34725_ENABLE_AIEN
         else:
             r &= ~self.TCS34725_ENABLE_AIEN
