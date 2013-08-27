@@ -104,10 +104,10 @@ class TCS34725():
         self._tcs34725Gain = gain
 
     def getRawData(self):
-        c = self.i2c.readU16(self.TCS34725_CDATAL)
-        r = self.i2c.readU16(self.TCS34725_RDATAL)
-        g = self.i2c.readU16(self.TCS34725_GDATAL)
-        b = self.i2c.readU16(self.TCS34725_BDATAL)
+        c = self.i2c.readU16(self.TCS34725_CDATAH)
+        r = self.i2c.readU16(self.TCS34725_RDATAH)
+        g = self.i2c.readU16(self.TCS34725_GDATAH)
+        b = self.i2c.readU16(self.TCS34725_BDATAH)
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
         elif self._tcs34725IntegrationTime == 0xF6:
