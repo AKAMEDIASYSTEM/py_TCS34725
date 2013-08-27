@@ -77,7 +77,7 @@ class TCS34725():
     def begin(self):
         x = self.i2c.readU8(self.TCS34725_ID)
         if x != 0x44:
-            print 'did not get the expected response from sensor'
+            print 'did not get the expected response from sensor', x
             return False
         self._tcs34725Initialised = True
         self.setIntegrationTime(self._tcs34725IntegrationTime)
