@@ -88,7 +88,7 @@ class TCS34725():
     def setIntegrationTime(self, theTime):
         if theTime not in [0xFF,0xF6,0xEB,0xD5,0xC0,0x00]:
             theTime = 0x00
-        self.i2c.write8(self.TCS34725_ATIME)
+        self.i2c.write8(self.TCS34725_ATIME, theTime)
         self._tcs34725IntegrationTime = theTime
 
     def setGain(self, gain):
