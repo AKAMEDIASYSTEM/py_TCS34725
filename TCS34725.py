@@ -93,7 +93,7 @@ class TCS34725():
     def disable(self):
         reg = 0
         reg = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE)
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN) & 0xFF)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN) & 0xFF))
 
     def setIntegrationTime(self, theTime):
         if theTime not in [0xFF,0xF6,0xEB,0xD5,0xC0,0x00]:
