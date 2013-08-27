@@ -55,3 +55,4 @@ print tcs.getStatus()
 while True:
 	print tcs.getRawData()
 	time.sleep(1)
+	print tcs.calculateColorTemperature(tcs.getRawRGBData())

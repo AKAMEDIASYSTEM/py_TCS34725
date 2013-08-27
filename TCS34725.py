@@ -137,6 +137,26 @@ class TCS34725():
             time.sleep(0.700)
         return c, r, g, b
 
+    def getRawRGBData(self):
+        r = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
+        g = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
+        b = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
+        if self._tcs34725IntegrationTime == 0xFF:
+            time.sleep(0.0024)
+        elif self._tcs34725IntegrationTime == 0xF6:
+            time.sleep(0.024)
+        elif self._tcs34725IntegrationTime == 0xEB:
+            time.sleep(0.050)
+        elif self._tcs34725IntegrationTime == 0xD5:
+            time.sleep(0.101)
+        elif self._tcs34725IntegrationTime == 0xC0:
+            time.sleep(0.154)
+        elif self._tcs34725IntegrationTime == 0x00:
+            time.sleep(0.700)
+        else:
+            time.sleep(0.700)
+        return r, g, b
+
     def calculateColorTemperature(self, r, g, b):
         # this is all from the Adafruit C library
         # 1. Map RGB values to their XYZ counterparts.
