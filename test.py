@@ -49,9 +49,6 @@ tcs.setIntegrationTime(0x00)
 print 'set integration time 0x14 (should break)'
 tcs.setIntegrationTime(0x14)
 
-print 'set integration time 0xEB'
-tcs.setIntegrationTime(0xEB)
-
 print 'getting status'
 print tcs.getStatus()
 

@@ -99,7 +99,7 @@ class TCS34725():
         if theTime not in [0xFF,0xF6,0xEB,0xD5,0xC0,0x00]:
             print 'setting integration time to 0x00, %s is illegal' % theTime
             theTime = 0x00
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ATIME, theTime & 0xFF)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ATIME, theTime)
         # self.i2c.write8(self.TCS34725_ATIME, theTime)
         self._tcs34725IntegrationTime = theTime
 
@@ -111,7 +111,7 @@ class TCS34725():
         if gain not in [0,1,2,3]:
             print 'setting gain to 0, %s is illegal' % gain
             gain = 0
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_CONTROL, gain  & 0xFF)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_CONTROL, gain & 0xFF)
         self._tcs34725Gain = gain
 
     def getStatus(self):
