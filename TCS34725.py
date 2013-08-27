@@ -188,6 +188,7 @@ class TCS34725():
         r = int(self.mapVals(r,0,65535,0,255))
         g = int(self.mapVals(g,0,65535,0,255))
         b = int(self.mapVals(b,0,65535,0,255))
+        return r, g, b
 
     def mapVals(self, val, inMin, inMax, outMin, outMax):
         toRet = outMin + (outMax - outMin) * ((val - inMin) / (inMax - inMin))
