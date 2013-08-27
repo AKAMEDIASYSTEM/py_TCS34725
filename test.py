@@ -25,6 +25,9 @@ print 'gain 4, this should not work'
 tcs.setGain(4)
 print tcs.getRawData()
 
+print ' setting gain to 1'
+tcs.setGain(1)
+
 print 'set integration time 0xFF'
 tcs.setIntegrationTime(0xFF)
 
