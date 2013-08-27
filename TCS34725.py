@@ -88,7 +88,7 @@ class TCS34725():
     def enable(self):
         self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON & 0xFF)
         time.sleep(0.003)
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (self.TCS34725_ENABLE_PON | sel f.TCS34725_ENABLE_AEN) & 0xFF)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN) & 0xFF)
 
     def disable(self):
         reg = 0
