@@ -75,7 +75,7 @@ class TCS34725():
         self.i2c = Adafruit_I2C(self.TCS34725_ADDRESS)
 
     def write8(self, reg, val):
-        self.write8(reg, val)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | reg, val & 0xFF)
 
     def read16(self, reg):
         return self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | reg)
