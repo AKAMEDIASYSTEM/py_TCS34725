@@ -25,8 +25,8 @@ print 'gain 4, this should not work'
 tcs.setGain(4)
 print tcs.getRawData()
 
-# print ' setting gain to 1'
-# tcs.setGain(1)
+print ' setting gain to 1'
+tcs.setGain(1)
 
 print 'set integration time 0xFF'
 tcs.setIntegrationTime(0xFF)
@@ -59,7 +59,6 @@ print 'getting status'
 print tcs.getStatus()
 
 while True:
-	r, g, b = tcs.getRawRGBData()
-	print r, g, b
+	print tcs.getRawData()
 	time.sleep(1)
 	# print tcs.calculateColorTemperature(r,g,b)
