@@ -5,20 +5,20 @@ import time
 
 tcs = tcs.TCS34725()
 tcs.begin()
-print 'gain 1'
+print 'gain 0'
+tcs.setGain(0)
+print tcs.getRawData()
+
+print 'gain x2'
 tcs.setGain(1)
 print tcs.getRawData()
 
-print 'gain 2'
+print 'gain x16'
 tcs.setGain(2)
 print tcs.getRawData()
 
-print 'gain 3'
+print 'gain x60'
 tcs.setGain(3)
-print tcs.getRawData()
-
-print 'gain 0'
-tcs.setGain(0)
 print tcs.getRawData()
 
 print 'gain 4, this should not work'

@@ -74,8 +74,17 @@ class TCS34725():
     def __init__(self, *args, **kwargs):
         self.i2c = Adafruit_I2C(self.TCS34725_ADDRESS)
 
+    def write8(self, reg, val):
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | reg, val & 0xFF)
+
+    def read16(self, reg):
+        return self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | reg)
+
+    def read8(self, reg):
+        return self.i2c.readU8(self.TCS34725_COMMAND_BIT | reg)
+
     def begin(self):
-        x = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ID)
+        x = self.read8(self.TCS34725_ID)
         if x != 0x44: # code I was basing this on expects 0x44, not sure why. Got 0x12
             print 'did not get the expected response from sensor: ', x
             return False
@@ -139,9 +148,9 @@ class TCS34725():
         return c, r, g, b
 
     def getRawRGBData(self):
-        r = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
-        g = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
-        b = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
+        r = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
+        g = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
+        b = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
         elif self._tcs34725IntegrationTime == 0xF6:
