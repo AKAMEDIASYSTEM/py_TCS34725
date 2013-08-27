@@ -167,6 +167,39 @@ class TCS34725():
             time.sleep(0.700)
         return r, g, b
 
+    def getWebColors(self):
+        r = self.read16(self.TCS34725_RDATAL)
+        g = self.read16(self.TCS34725_GDATAL)
+        b = self.read16(self.TCS34725_BDATAL)
+        if self._tcs34725IntegrationTime == 0xFF:
+            time.sleep(0.0024)
+        elif self._tcs34725IntegrationTime == 0xF6:
+            time.sleep(0.024)
+        elif self._tcs34725IntegrationTime == 0xEB:
+            time.sleep(0.050)
+        elif self._tcs34725IntegrationTime == 0xD5:
+            time.sleep(0.101)
+        elif self._tcs34725IntegrationTime == 0xC0:
+            time.sleep(0.154)
+        elif self._tcs34725IntegrationTime == 0x00:
+            time.sleep(0.700)
+        else:
+            time.sleep(0.700)
+        r = int(self.mapVals(r,0,65535,0,255))
+        g = int(self.mapVals(g,0,65535,0,255))
+        b = int(self.mapVals(b,0,65535,0,255))
+
+    def mapVals(val, inMin, inMax, outMin, outMax):
+        toRet = outMin + (outMax - outMin) * ((val - inMin) / (inMax - inMin))
+        return self.clamp(toRet, outMin, outMax)
+
+    def clamp(val, min, max):
+        if (val < min):
+            val = min
+        if (val > max):
+            val = max
+        return val
+
     def calculateColorTemperature(self, r, g, b):
         # this is all from the Adafruit C library
         # 1. Map RGB values to their XYZ counterparts.
