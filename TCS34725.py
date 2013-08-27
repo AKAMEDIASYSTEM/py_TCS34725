@@ -76,7 +76,7 @@ class TCS34725():
 
     def begin(self):
         x = self.i2c.readU8(self.TCS34725_ID)
-        if x != 0x44:
+        if x != 0x12: # code I was basing this on expects 0x44, not sure why
             print 'did not get the expected response from sensor', x
             return False
         self._tcs34725Initialised = True
