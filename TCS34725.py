@@ -99,7 +99,8 @@ class TCS34725():
         if theTime not in [0xFF,0xF6,0xEB,0xD5,0xC0,0x00]:
             print 'setting integration time to 0x00, %s is illegal' % theTime
             theTime = 0x00
-        self.i2c.write8(self.TCS34725_ATIME, theTime)
+        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ATIME, theTime & 0xFF)
+        # self.i2c.write8(self.TCS34725_ATIME, theTime)
         self._tcs34725IntegrationTime = theTime
 
     def setGain(self, gain):
@@ -138,9 +139,9 @@ class TCS34725():
         return c, r, g, b
 
     def getRawRGBData(self):
-        r = self.i2c.readS16(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
-        g = self.i2c.readS16(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
-        b = self.i2c.readS16(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
+        r = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
+        g = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
+        b = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
         elif self._tcs34725IntegrationTime == 0xF6:
