@@ -75,7 +75,7 @@ class TCS34725():
         self.i2c = Adafruit_I2C(self.TCS34725_ADDRESS)
 
     def write8(self, reg, val):
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | reg, val & 0xFF)
+        self.write8(reg, val)
 
     def read16(self, reg):
         return self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | reg)
@@ -95,20 +95,20 @@ class TCS34725():
         return True
 
     def enable(self):
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON & 0xFF)
+        self.write8(self.TCS34725_ENABLE, self.TCS34725_ENABLE_PON)
         time.sleep(0.003)
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN) & 0xFF)
+        self.write8(self.TCS34725_ENABLE, (self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN))
 
     def disable(self):
         reg = 0
         reg = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE)
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, (reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN)) & 0xFF)
+        self.write8(self.TCS34725_ENABLE, (reg & ~(self.TCS34725_ENABLE_PON | self.TCS34725_ENABLE_AEN)))
 
     def setIntegrationTime(self, theTime):
         if theTime not in [0xFF,0xF6,0xEB,0xD5,0xC0,0x00]:
             print 'setting integration time to 0x00, %s is illegal' % theTime
             theTime = 0x00
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ATIME, theTime & 0xFF)
+        self.write8(self.TCS34725_ATIME, theTime)
         # self.i2c.write8(self.TCS34725_ATIME, theTime)
         self._tcs34725IntegrationTime = theTime
 
@@ -120,17 +120,17 @@ class TCS34725():
         if gain not in [0,1,2,3]:
             print 'setting gain to 0, %s is illegal' % gain
             gain = 0
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_CONTROL, gain & 0xFF)
+        self.write8(self.TCS34725_CONTROL, gain)
         self._tcs34725Gain = gain
 
     def getStatus(self):
         return self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_STATUS)
 
     def getRawData(self):
-        c = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_CDATAL)
-        r = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
-        g = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
-        b = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
+        c = self.read16(self.TCS34725_CDATAL)
+        r = self.read16(self.TCS34725_RDATAL)
+        g = self.read16(self.TCS34725_GDATAL)
+        b = self.read16(self.TCS34725_BDATAL)
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
         elif self._tcs34725IntegrationTime == 0xF6:
@@ -148,9 +148,9 @@ class TCS34725():
         return c, r, g, b
 
     def getRawRGBData(self):
-        r = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
-        g = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
-        b = self.i2c.readU16Rev(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
+        r = self.read16(self.TCS34725_RDATAL)
+        g = self.read16(self.TCS34725_GDATAL)
+        b = self.read16(self.TCS34725_BDATAL)
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
         elif self._tcs34725IntegrationTime == 0xF6:
@@ -192,15 +192,15 @@ class TCS34725():
         return ((-0.32466 * r) + (1.57837 * g) + (-0.73191 * b))
 
     def setInterrupt(self, theBool):
-        r = self.i2c.readU8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE)
+        r = self.read8(self.TCS34725_ENABLE)
         if theBool:
             r |= self.TCS34725_ENABLE_AIEN
         else:
             r &= ~self.TCS34725_ENABLE_AIEN
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ENABLE, r & 0xFF)
+        self.write8(self.TCS34725_ENABLE, r)
 
     def clearInterrupt(self):
-        self.i2c.write8(self.TCS34725_COMMAND_BIT | self.TCS34725_ADDRESS, 0x66 & 0xFF)
+        self.write8(self.TCS34725_ADDRESS, 0x66)
 
     def setInterruptLimits(self, lo, hi):
         pass
