@@ -138,9 +138,9 @@ class TCS34725():
         return c, r, g, b
 
     def getRawRGBData(self):
-        r = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
-        g = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
-        b = self.i2c.readU16(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
+        r = self.i2c.readS16(self.TCS34725_COMMAND_BIT | self.TCS34725_RDATAL)
+        g = self.i2c.readS16(self.TCS34725_COMMAND_BIT | self.TCS34725_GDATAL)
+        b = self.i2c.readS16(self.TCS34725_COMMAND_BIT | self.TCS34725_BDATAL)
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
         elif self._tcs34725IntegrationTime == 0xF6:
