@@ -177,9 +177,9 @@ class TCS34725():
         g *= c/255
         b *= c/255
 
-        r = int(clamp(r,0,255))
-        g = int(clamp(g,0,255))
-        b = int(clamp(b,0,255))
+        r = int(self.clamp(r,0,255))
+        g = int(self.clamp(g,0,255))
+        b = int(self.clamp(b,0,255))
 
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
