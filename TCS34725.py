@@ -174,6 +174,7 @@ class TCS34725():
         b = self.read16(self.TCS34725_BDATAL)
 
         sumL = r+g+b
+        print 'sumL is ',sumL
 
         r = self.mapVals(r,0,sumL,0,255)
         g = self.mapVals(g,0,sumL,0,255)
