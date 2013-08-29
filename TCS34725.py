@@ -195,7 +195,7 @@ class TCS34725():
             time.sleep(0.700)
         else:
             time.sleep(0.700)
-        return r, g, b
+        return c, r, g, b
 
     def getWebColors(self, maximum):
         # convenience function that doesn't work well
