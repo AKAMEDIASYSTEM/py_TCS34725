@@ -179,9 +179,9 @@ class TCS34725():
         # r = self.mapVals(r,0,sumL,0,255)
         # g = self.mapVals(g,0,sumL,0,255)
         # b = self.mapVals(b,0,sumL,0,255)
-        r = int(r/float(sumL))
-        g = int(g/float(sumL))
-        b = int(b/float(sumL))
+        r = r/float(sumL)
+        g = g/float(sumL)
+        b = b/float(sumL)
 
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
