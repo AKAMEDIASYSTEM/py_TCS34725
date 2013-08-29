@@ -5,7 +5,7 @@ import time
 
 tcs = tcs.TCS34725()
 tcs.begin()
-print 'gain 0'
+print 'gain x1'
 tcs.setGain(0)
 print tcs.getRawData()
 
@@ -25,7 +25,7 @@ print 'gain 4, this should not work'
 tcs.setGain(4)
 print tcs.getRawData()
 
-print ' setting gain to 1'
+print ' setting gain to x2'
 tcs.setGain(1)
 
 print 'set integration time 0xFF'
