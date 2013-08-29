@@ -167,7 +167,40 @@ class TCS34725():
             time.sleep(0.700)
         return r, g, b
 
-    def getWebColors(self):
+    def getRGBData(self):
+        c = self.read16(self.TCS34725_CDATAL)
+        r = self.read16(self.TCS34725_RDATAL)
+        g = self.read16(self.TCS34725_GDATAL)
+        b = self.read16(self.TCS34725_BDATAL)
+
+        r *= c/255
+        g *= c/255
+        b *= c/255
+
+        r = int(clamp(r,0,255))
+        g = int(clamp(g,0,255))
+        b = int(clamp(b,0,255))
+
+        if self._tcs34725IntegrationTime == 0xFF:
+            time.sleep(0.0024)
+        elif self._tcs34725IntegrationTime == 0xF6:
+            time.sleep(0.024)
+        elif self._tcs34725IntegrationTime == 0xEB:
+            time.sleep(0.050)
+        elif self._tcs34725IntegrationTime == 0xD5:
+            time.sleep(0.101)
+        elif self._tcs34725IntegrationTime == 0xC0:
+            time.sleep(0.154)
+        elif self._tcs34725IntegrationTime == 0x00:
+            time.sleep(0.700)
+        else:
+            time.sleep(0.700)
+        return r, g, b
+
+    def getWebColors(self, maximum):
+        # convenience function that doesn't work well
+        # the "maximum" parameter should be the max observed value for each channel
+        # which is a pain to calibrate manually, so this prob isn't useful
         r = self.read16(self.TCS34725_RDATAL)
         g = self.read16(self.TCS34725_GDATAL)
         b = self.read16(self.TCS34725_BDATAL)
@@ -185,9 +218,9 @@ class TCS34725():
             time.sleep(0.700)
         else:
             time.sleep(0.700)
-        r = int(self.mapVals(r,0,65535,0,255))
-        g = int(self.mapVals(g,0,65535,0,255))
-        b = int(self.mapVals(b,0,65535,0,255))
+        r = int(self.mapVals(r,0,maximum,0,255))
+        g = int(self.mapVals(g,0,maximum,0,255))
+        b = int(self.mapVals(b,0,maximum,0,255))
         return r, g, b
 
     def mapVals(self, val, inMin, inMax, outMin, outMax):
