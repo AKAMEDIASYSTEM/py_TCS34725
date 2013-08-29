@@ -173,11 +173,11 @@ class TCS34725():
         g = self.read16(self.TCS34725_GDATAL)
         b = self.read16(self.TCS34725_BDATAL)
 
-        sum = r+g+b
+        sumL = r+g+b
 
-        r = self.mapVals(r,0,sum,0,255)
-        g = self.mapVals(g,0,sum,0,255)
-        b = self.mapVals(b,0,sum,0,255)
+        r = self.mapVals(r,0,sumL,0,255)
+        g = self.mapVals(g,0,sumL,0,255)
+        b = self.mapVals(b,0,sumL,0,255)
 
         if self._tcs34725IntegrationTime == 0xFF:
             time.sleep(0.0024)
